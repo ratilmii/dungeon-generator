@@ -1,7 +1,16 @@
 import pygame
 import numpy as np
+from delaunay import triangulate
 
 class Dungeon:
+    """
+    Luodaan Dungeon-olio joka generoi annetun määrän satunnaisen kokoisia (annetuissa rajoissa) huoneita.
+
+    Huoneiden keskipisteet tallennetaan points-listaan ja niille tehdään Delaunay-triangulaatio.
+
+    Triangulaatiosta saatu edges-setti sisältää huoneiden keskipisteiden väliset yhteydet.
+    """
+
     def __init__(self, left_buffer, buffer, width, height, tile_size, room_count, room_min_len, room_max_len):
         self.left_buffer = left_buffer
         self.buffer = buffer
@@ -13,11 +22,16 @@ class Dungeon:
         self.room_min_len = room_min_len 
         self.room_max_len = room_max_len
 
+        self.rooms = []
+        self.points = []
+        self.edges = set()
+
         self.generate_rooms()   
 
     def generate_rooms(self):
         self.rooms = []
         self.points = []
+        self.edges = set()
         BUFFER = 1 * self.tile_size
         attempts_left = 1000
 
@@ -35,6 +49,8 @@ class Dungeon:
                 self.points.append(new_room.center)
             
             attempts_left -= 1
+
+        self.edges = triangulate(self.points)
 
     def draw_rooms(self, screen):
         for room in self.rooms:

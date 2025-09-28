@@ -1,7 +1,9 @@
 import numpy as np
 
 def circumcircle_contains(p1, p2, p3, p):
-    """Palauttaa True mikäli piste p on kolmion (p1, p2, p3) ympäröivän ympyrän sisällä."""
+    """
+    Palauttaa True mikäli piste p on kolmion (p1, p2, p3) ympäröivän ympyrän sisällä.
+    """
 
     p1, p2, p3, p = [np.array(pt, dtype=float) for pt in (p1, p2, p3, p)]
     
@@ -37,7 +39,7 @@ def triangulate(points):
     
     points-parametri luolaston generoinnista saatu lista (x,y) tupleja.
 
-    Palauttaa setin (i, j) tupleja, jotka yhdistävät points-listan indeksejä ja siis vastaavat hyväksyttyjen kolmioiden sivuja.
+    Palauttaa setin (i, j) tupleja, jotka yhdistävät points-listan indeksejä ja vastaavat hyväksyttyjen kolmioiden sivuja.
     """
     
     if len(points) < 3:

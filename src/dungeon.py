@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from delaunay import triangulate
+from prim import minimum_spanning_tree
 
 class Dungeon:
     """
@@ -25,6 +26,7 @@ class Dungeon:
         self.rooms = []
         self.points = []
         self.edges = set()
+        self.mst = set()
 
         self.generate_rooms()   
 
@@ -32,7 +34,10 @@ class Dungeon:
         self.rooms = []
         self.points = []
         self.edges = set()
+        self.mst = set()
+
         BUFFER = 1 * self.tile_size
+
         attempts_left = 1000
 
         while len(self.rooms) < self.room_count and attempts_left > 0:
@@ -51,6 +56,7 @@ class Dungeon:
             attempts_left -= 1
 
         self.edges = triangulate(self.points)
+        self.mst = minimum_spanning_tree(self.points, self.edges)
 
     def draw_rooms(self, screen):
         for room in self.rooms:

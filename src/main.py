@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from dungeon import Dungeon
 
+# Parametrit ikkunalle ja piirtoalueen ruudukolle
 WIDTH, HEIGHT = 1600, 900
 tile_size = 20
 grid_width, grid_height = tile_size * 64, tile_size * 40
@@ -17,6 +18,7 @@ color_bg = (200,200,200)
 black = (0,0,0)
 white = (255,255,255)
 green = (0, 255, 0)
+blue = (0, 0, 255)
 
 if __name__ == "__main__":
     pygame.init()
@@ -36,9 +38,13 @@ if __name__ == "__main__":
         dungeon.draw_rooms(screen)
         points = dungeon.points
         edges = dungeon.edges
-        
+        mst = dungeon.mst
+
         for i, j in edges:
             pygame.draw.line(screen, green, points[i], points[j], 2)
+        
+        for i, j in mst:
+            pygame.draw.line(screen, blue, points[i], points[j], 4)
 
         for point in points:
             pygame.draw.circle(screen, black, point, 3)        

@@ -26,7 +26,16 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Dungeon Generator")
 
-    dungeon = Dungeon(left_buffer, buffer, grid_width, grid_height, tile_size, room_count, room_min_len, room_max_len)    
+    dungeon = Dungeon(
+        left_buffer,
+        buffer,
+        grid_width,
+        grid_height,
+        tile_size,
+        room_count,
+        room_min_len,
+        room_max_len
+    )    
 
     generate_button_rect = pygame.Rect(50, 50, 170, 40)
     font = pygame.font.Font(None, 32)

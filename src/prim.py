@@ -1,11 +1,14 @@
 import numpy as np
 
-def minimum_spanning_tree(points, triangulation):
+def minimum_spanning_tree(points, edges):
     """
     Luodaan minimum spanning tree käyttäen Primin algoritmia.
+
     Syötteenä saadaan lista (x, y) tupleja "points", joka pitää sisällään huoneiden keskipisteiden koordinaatit,
-    sekä setti (i, j) tupleja "triangulation", jossa i ja j ovat points-listan indeksejä ja vastaavat hyväksyttyjen kolmioiden sivujen päätepisteitä.
-    Funktio palauttaa setin (i, j) tupleja "result_edges" kuten triangulaatio, mutta sisältää vain minimimäärän sivuja.
+
+    sekä setti (i, j) tupleja "edges", jossa i ja j ovat points-listan indeksejä ja vastaavat hyväksyttyjen kolmioiden sivujen päätepisteitä.
+
+    Funktio palauttaa setin (i, j) tupleja "result_edges", joka sisältää minimimäärän sivuja jotka käyvät läpi kaikki pisteet.
     """
 
     cheapest_cost = {point: np.inf for point in points}
@@ -19,7 +22,7 @@ def minimum_spanning_tree(points, triangulation):
 
     # Sanakirja pisteiden välisille yhteyksille
     connections = {i: [] for i in range(len(points))}
-    for i, j in triangulation:
+    for i, j in edges:
         connections[i].append(j)
         connections[j].append(i)
 
@@ -38,7 +41,7 @@ def minimum_spanning_tree(points, triangulation):
 
             if neighbor in unexplored and w < cheapest_cost[neighbor]:
                 cheapest_cost[neighbor] = w
-                cheapest_edge[neighbor] = (current_point_idx, neighbor_idx)
+                cheapest_edge[neighbor] = tuple(sorted([current_point_idx, neighbor_idx]))
     
     result_edges = set()
 

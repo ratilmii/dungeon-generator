@@ -19,19 +19,32 @@ def circumcircle_contains(p1, p2, p3, p):
     # Pisteiden muodostaman kolmion orientaatio
     orient = (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
     # Jos pisteet samalla viivalla
-    if abs(orient) < 1e-10:
+    tolerance = 1e-9
+    if abs(orient) < tolerance:
         return False
     elif orient > 0:
-        return det > 0
+        return det > tolerance
     else:
-        return det < 0
+        return det < -tolerance
 
-# Manuaalisesti määritelty piirtoalueen koordinaattien perusteella
-SUPER_TRIANGLE = [
-    (920, -950),
-    (-730, 1850),
-    (2550, 1850)
-]
+def make_super_triangle(points):
+    """
+    Luodaan super triangle joka sisältää varmasti kaikki pisteet.
+    """
+
+    min_x, max_x = np.min(points[:, 0]), np.max(points[:, 0])
+    min_y, max_y = np.min(points[:, 1]), np.max(points[:, 1])
+    dx = max_x - min_x
+    dy = max_y - min_y
+    scaling = max(dx, dy)
+    midx = (min_x + max_x) / 2
+    midy = (min_y + max_y) / 2
+
+    return [
+        (midx - 20 * scaling, midy + scaling),
+        (midx, midy - 20 * scaling),
+        (midx + 20 * scaling, midy + scaling)
+    ]
 
 def triangulate(points):
     """"
@@ -39,7 +52,7 @@ def triangulate(points):
     
     points-parametri luolaston generoinnista saatu lista (x,y) tupleja.
 
-    Palauttaa setin (i, j) tupleja, jotka yhdistävät points-listan indeksejä ja vastaavat hyväksyttyjen kolmioiden sivuja.
+    Palauttaa listan kolmioita muodossa [[i, j, k],...], jossa i, j, k ovat points-listan indeksejä.
     """
     
     if len(points) < 3:
@@ -48,7 +61,9 @@ def triangulate(points):
     points = np.array(points, dtype=float)
     n = len(points)
 
-    super_vertices = [np.array(pt, dtype=float) for pt in SUPER_TRIANGLE]
+    super_triangle = make_super_triangle(points)
+
+    super_vertices = [np.array(pt, dtype=float) for pt in super_triangle]
     points = np.vstack([points, super_vertices])
     super_indices = list(range(n, n + 3))
 
@@ -75,12 +90,19 @@ def triangulate(points):
             newTri = [i, edge[0], edge[1]]
             triangulation.append(newTri)
 
-    triangulation = [t for t in triangulation if not any(v in super_indices for v in t)]
+    triangulation = [t for t in triangulation if not any(v in super_indices for v in t)]    
+    
+    return triangulation
+
+def get_edges(triangulation):
+    """
+    Palauttaa triangulaatiosta saatujen kolmioiden sivut settinä (i, j)-tupleja, jotka vastaavat points-listan indeksejä.
+    """
 
     edges = set()
     for triangle in triangulation:
         for j in range(3):
             edge = tuple(sorted([triangle[j], triangle[(j + 1) % 3]]))
             edges.add(edge)
-    
+
     return edges

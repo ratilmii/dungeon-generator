@@ -1,38 +1,44 @@
 import pygame
 import numpy as np
-from delaunay import triangulate
+from delaunay import triangulate, get_edges
 from prim import minimum_spanning_tree
 
 class Dungeon:
-    """
-    Luodaan Dungeon-olio joka generoi annetun määrän satunnaisen kokoisia (annetuissa rajoissa) huoneita.
+    def __init__(self, left_buffer, buffer, grid_width, grid_height, tile_size, room_count, room_min_len, room_max_len):
+        """
+        Luodaan Dungeon-olio joka generoi room_count määrän satunnaisen kokoisia (room_min_len - room_max_len) huoneita.
 
-    Huoneiden keskipisteet tallennetaan points-listaan ja niille tehdään Delaunay-triangulaatio.
+        left_buffer ja buffer rajaavat piirtoalueen ohjelman pääikkunaa pienemmäksi.
 
-    Triangulaatiosta saatu edges-setti sisältää huoneiden keskipisteiden väliset yhteydet.
-    """
+        grid_width ja grid_height määrittelevät piirtoalueen leveyden ja korkeuden.
 
-    def __init__(self, left_buffer, buffer, width, height, tile_size, room_count, room_min_len, room_max_len):
+        tile_size määrittelee ruudukon yksittäisen ruudun koon.
+        """
+
         self.left_buffer = left_buffer
         self.buffer = buffer
-        self.width = width
-        self.height = height
+        self.grid_width = grid_width
+        self.grid_height = grid_height
         self.tile_size = tile_size
         self.room_count = room_count
         
         self.room_min_len = room_min_len 
         self.room_max_len = room_max_len
 
-        self.rooms = []
-        self.points = []
-        self.edges = set()
-        self.mst = set()
-
         self.generate_rooms()   
 
     def generate_rooms(self):
+        """
+        Generoidaan huoneet annettujen parametrien perusteella. 
+
+        Huoneet eivät saa olla päällekkäin, tai aivan vierekkäin, ja niiden sijoittamiselle on attempts_left määrä yrityksiä.
+
+        Kun huoneet on generoitu, niille tehdään Delaunay-triangulaatio ja luodaan minimum spanning tree.
+        """
+        
         self.rooms = []
         self.points = []
+        self.triangulation = []
         self.edges = set()
         self.mst = set()
 
@@ -55,22 +61,31 @@ class Dungeon:
             
             attempts_left -= 1
 
-        self.edges = triangulate(self.points)
+        self.triangulation = triangulate(self.points)
+        self.edges = get_edges(self.triangulation)
         self.mst = minimum_spanning_tree(self.points, self.edges)
 
     def draw_rooms(self, screen):
+        """
+        Piirretään huoneet näytölle.
+        """
+        
         for room in self.rooms:
             pygame.draw.rect(screen, (200, 100, 100), room)
 
     def draw_grid(self, screen):
+        """
+        Piirretään ruudukon viivat perustuen tile_size-kokoon.
+        """
+
         color_grid_line = (180,180,180)
         color_outline = (0,0,0)
 
         for x in range(65):
             position_x = self.left_buffer + x * self.tile_size
-            pygame.draw.line(screen, color_grid_line, (position_x, self.buffer), (position_x, self.buffer + self.height), 1)
+            pygame.draw.line(screen, color_grid_line, (position_x, self.buffer), (position_x, self.buffer + self.grid_height), 1)
         for y in range(41):
             position_y = self.buffer + y * self.tile_size
-            pygame.draw.line(screen, color_grid_line, (self.left_buffer, position_y), (self.left_buffer + self.width, position_y), 1)
+            pygame.draw.line(screen, color_grid_line, (self.left_buffer, position_y), (self.left_buffer + self.grid_width, position_y), 1)
             
-        pygame.draw.rect(screen, color_outline, (self.left_buffer, self.buffer, self.width, self.height), 2)
+        pygame.draw.rect(screen, color_outline, (self.left_buffer, self.buffer, self.grid_width, self.grid_height), 2)

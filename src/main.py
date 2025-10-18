@@ -1,11 +1,15 @@
 import pygame
 import numpy as np
 from dungeon import Dungeon
+from pathfinding import Pathfinding
 
 # Parametrit ikkunalle ja piirtoalueen ruudukolle
 WIDTH, HEIGHT = 1600, 900
 tile_size = 20
-grid_width, grid_height = tile_size * 64, tile_size * 40
+tiles_horizontal = 64
+tiles_vertical = 40
+
+grid_width, grid_height = tile_size * tiles_horizontal, tile_size * tiles_vertical
 
 left_buffer = 270
 buffer = 50
@@ -35,7 +39,9 @@ if __name__ == "__main__":
         room_count,
         room_min_len,
         room_max_len
-    )    
+    )
+
+    pathfinding = Pathfinding(dungeon)
 
     generate_button_rect = pygame.Rect(50, 50, 170, 40)
     font = pygame.font.Font(None, 32)

@@ -25,6 +25,12 @@ class Dungeon:
         self.room_min_len = room_min_len 
         self.room_max_len = room_max_len
 
+        self.rooms = []
+        self.points = []
+        self.triangulation = []
+        self.edges = set()
+        self.mst = set()
+
         self.generate_rooms()   
 
     def generate_rooms(self):
@@ -36,11 +42,8 @@ class Dungeon:
         Kun huoneet on generoitu, niille tehdään Delaunay-triangulaatio ja luodaan minimum spanning tree.
         """
         
-        self.rooms = []
-        self.points = []
-        self.triangulation = []
-        self.edges = set()
-        self.mst = set()
+        self.rooms.clear()
+        self.points.clear()
 
         BUFFER = 1 * self.tile_size
 

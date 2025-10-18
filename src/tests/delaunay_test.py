@@ -8,7 +8,7 @@ class TestDelaunay(unittest.TestCase):
         """
         Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena. 
 
-        Tallennetaan huoneiden keskipisteet muuttujaan.
+        Tallennetaan huoneiden keskipisteet, triangulaatio ja kolmioiden sivut muuttujiin.
         """
         
         tile_size = 20
@@ -33,11 +33,23 @@ class TestDelaunay(unittest.TestCase):
         )
 
         self.points = dungeon.points
+        self.triangles = triangulate(self.points)
+        self.edges = get_edges(self.triangles)
     
     def test_circumcircle_contains(self):
         p1, p2, p3 = (0, 0), (1, 0), (0, 1)
         p = (0.5, 0.5)
-        self.assertTrue(circumcircle_contains(p1, p2, p3, p))
+        self.assertTrue(circumcircle_contains(p1, p2, p3, p), f"Piste ei ollut ympärysympyrän sisällä")
+
+    def test_points_on_same_line(self):
+        p1, p2, p3 = (0, 0), (1, 0), (2, 0)
+        p = (0.5, 0)
+        self.assertFalse(circumcircle_contains(p1, p2, p3, p), f"Pisteet eivät olleet samalla viivalla")
+
+    def test_triangulate_at_least_one_triangle(self):
+        points = []
+        self.assertEqual(triangulate(points), set(), f"Triangulaatiossa ei ollut yhtään kolmiota")
+
 
     def test_triangulate(self):
         """
@@ -48,15 +60,13 @@ class TestDelaunay(unittest.TestCase):
         2. yksikään piste ei ole sellaisen kolmion, johon se ei kuulu, ympärysympyrän sisällä
         
         3. kaikki kolmioiden indeksit ovat valideja
-        """
-        
-        triangles = triangulate(self.points)
+        """      
 
         for i in range(len(self.points)):
-            in_triangle = any(i in triangle for triangle in triangles)
+            in_triangle = any(i in triangle for triangle in self.triangles)
             self.assertTrue(in_triangle, f"Piste {i} ei esiinny yhdessäkään kolmiossa")
 
-            for triangle in triangles:
+            for triangle in self.triangles:
                 if i not in triangle:
                     if circumcircle_contains(
                         self.points[triangle[0]],
@@ -66,7 +76,7 @@ class TestDelaunay(unittest.TestCase):
                     ):
                         self.fail(f"Piste {i} on kolmion {triangle} ympärysympyrän sisällä")
 
-        for triangle in triangles:
+        for triangle in self.triangles:
             for idx in triangle:
                 self.assertTrue(0 <= idx < len(self.points), f"Kolmion indeksi {idx} pistelistan ulkopuolella")
 
@@ -75,13 +85,10 @@ class TestDelaunay(unittest.TestCase):
         Testataan, että kaikki sivut, jotka saadaan triangulaatiosta, ovat jossakin kolmiossa.
         """
         
-        triangles = triangulate(self.points)
-        edges = get_edges(triangles)
-
-        for edge in edges:
+        for edge in self.edges:
             i, j = edge
             found = False
-            for triangle in triangles:
+            for triangle in self.triangles:
                 if i in triangle and j in triangle:
                     found = True
                     break

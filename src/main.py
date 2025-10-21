@@ -51,15 +51,16 @@ if __name__ == "__main__":
         screen.fill(color_bg)
         dungeon.draw_grid(screen)
         dungeon.draw_rooms(screen)
+        pathfinding.draw_clean_paths(screen)
         points = dungeon.points
         edges = dungeon.edges
         mst = dungeon.mst
 
-        for i, j in edges:
-            pygame.draw.line(screen, green, points[i], points[j], 2)
+        #for i, j in edges:
+        #    pygame.draw.line(screen, green, points[i], points[j], 2)
         
         for i, j in mst:
-            pygame.draw.line(screen, blue, points[i], points[j], 4)
+            pygame.draw.line(screen, blue, points[i], points[j], 3)
 
         for point in points:
             pygame.draw.circle(screen, black, point, 3)        
@@ -73,5 +74,6 @@ if __name__ == "__main__":
             elif event.type == pygame.MOUSEBUTTONDOWN:  
                 if generate_button_rect.collidepoint(event.pos):
                     dungeon.generate_rooms()
-
+                    pathfinding.find_all_paths()
+        
         pygame.display.flip()

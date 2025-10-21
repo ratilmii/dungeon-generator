@@ -72,9 +72,10 @@ class Dungeon:
         """
         Piirretään huoneet näytölle.
         """
-        
+
         for room in self.rooms:
             pygame.draw.rect(screen, (200, 100, 100), room)
+            pygame.draw.rect(screen, (50, 50, 50), room, 1)
 
     def draw_grid(self, screen):
         """

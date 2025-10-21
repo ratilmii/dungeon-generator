@@ -16,6 +16,11 @@ class Path:
         self.cells = []
 
     def generate_cells(self, tile_size, left_buffer, buffer):
+        """
+        Luodaan pygame-rect oliot grid_cells sijainneista.
+        Yksi ruudukon solu laajennetaan tile_size-kokoiseksi neliöksi pikselikoordinaatteihin.
+        """
+        
         self.cells = [
             pygame.Rect(
                 left_buffer + col * tile_size,
@@ -29,7 +34,8 @@ class Path:
 class Pathfinding:
     """
     Luodaan annetulle Dungeon-oliolle Pathfinding-olio,
-    joka käyttää A*-algoritmia ja modifioitua Manhattan-heuristiikkaa.
+    joka käyttää A*-algoritmia ja Manhattan-heuristiikkaa.
+    Mikäli ruudukon sijainnissa on jo käyty, suositaan sitä jatkossa uusille, lähelle tuleville poluille.
     Tallennetaan kaikki polut listaan.
     """
 
@@ -45,7 +51,7 @@ class Pathfinding:
 
     def pixel_to_grid(self, point):
         """
-        Muuntaa pikselikoordinaatit ruudukon solukoordinaateiksi.
+        Muuntaa pikselikoordinaatit grid_table solukoordinaateiksi (row, col).
         """
 
         px, py = point
@@ -57,7 +63,6 @@ class Pathfinding:
         """
         Asettaa generoitujen huoneiden arvoksi 1 grid_tablessa.
         Tämä merkitsee sijaintia, jossa on jo olemassaoleva "käveltävissä oleva" tila, jota suositaan pathfindingissa.
-        Lisäksi huoneiden solut asetetaan kontaktiin keskipisteen kanssa.
         """
 
         self.grid_table.fill(0)
@@ -69,7 +74,7 @@ class Pathfinding:
 
     def get_neighbors(self, node):
         """
-        Palauttaa ei-diagonaaliset naapurit
+        Palauttaa ei-diagonaaliset naapurit.
         """
 
         (row, col) = node
@@ -85,12 +90,17 @@ class Pathfinding:
 
     def heuristic(self, a, b):
         """
-        Manhattan-etäisyys
+        Manhattan-etäisyys.
         """
 
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
     
     def reconstruct_path(self, came_from, current):
+        """
+        Kuljetaan reitti taaksepäin kunnes se ollaan käyty kokonaan läpi.
+        Käännetään saatu tulos ympäri, jolloin saadaan lista kaikista reitin koordinaateista alusta maaliin.
+        """
+
         total_path = [current]
         while current in came_from:
             current = came_from[current]
@@ -99,25 +109,37 @@ class Pathfinding:
         return total_path
 
     def A_Star(self, start, goal):
+        """
+        A*-algoritmi etsii lyhyimmän reitin kahden pisteen välillä.
+        Algoritmi tutkii kunkin solun naapurit antaen niille arvon perustuen siihen,
+        kuinka pitkän matkan olemme jo kulkeneet (g_score) ja kuinka pitkä matka naapurin kautta
+        maaliin tulee yhteensä olemaan (f_score) perustuen valittuun Manhattan-heuristiikkaan (f(n)=g(n)+h(n)).
+        Siirrytään soluun, jolle saadaan matalin arvo ja toistetaan, kunnes ollaan maalissa.
+        Käytetään prioriteettijonoa heapq, joka säilöö solut pienimmän arvon mukaiseen järjestykseen.
+        """
+        
         open_set = [(0, start)]
         came_from = {}
         g_score = {start: 0}
         f_score = {start: self.heuristic(start, goal)}
 
         while open_set:
+            # heappop palauttaa solun jolla on pienin arvo
             _, current = heapq.heappop(open_set)
 
+            # Maali saavutettu
             if current == goal:
                 return self.reconstruct_path(came_from, current)
             
+            # Mikäli naapurissa on käyty aikaisemmin, suosi sitä 
             for neighbor in self.get_neighbors(current):
                 cost = 1
                 if self.grid_table[neighbor[0], neighbor[1]] == 1:
-                    cost = 0.5
+                    cost = 0
 
                 tentative_g = g_score[current] + cost
 
-                if tentative_g < g_score.get(neighbor, float("inf")):
+                if tentative_g < g_score.get(neighbor, np.inf):
                     came_from[neighbor] = current
                     g_score[neighbor] = tentative_g
                     f_score[neighbor] = tentative_g + self.heuristic(neighbor, goal)
@@ -127,8 +149,8 @@ class Pathfinding:
     
     def find_all_paths(self):
         """
-        Luo polut MST:n pisteiden (huoneiden keskipisteiden) välille.
-        Tallentaa ne Path-olioina.
+        Luo kaikki polut MST:n pisteiden (huoneiden keskipisteiden) välille.
+        Tallentaa ne Path-olioina self.paths-listaan.
         """
 
         self.paths.clear()
@@ -151,13 +173,21 @@ class Pathfinding:
                 for row, col in path_cells:
                     self.grid_table[row, col] = 1
 
-    def draw_full_paths(self, screen):
+    def draw_all_paths(self, screen):
+        """
+        Piirretään kaikki polut, myös ne, jotka menevät huoneiden päälle.
+        """
+
         for path in self.paths:
             for cell in path.cells:
-                pygame.draw.rect(screen, (100, 100, 100), cell)
+                pygame.draw.rect(screen, (120, 100, 100), cell)
     
     def draw_clean_paths(self, screen):
+        """
+        Piirretään vain ne polut, jotka eivät osu huoneiden kanssa päällekkäin.
+        """
+
         for path in self.paths:
             for cell in path.cells:
                 if not any(cell.colliderect(existing) for existing in self.dungeon.rooms):
-                    screen.fill((150, 100, 100), cell)
+                    screen.fill((120, 100, 100), cell)

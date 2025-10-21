@@ -3,11 +3,8 @@ import numpy as np
 def minimum_spanning_tree(points, edges):
     """
     Luodaan minimum spanning tree käyttäen Primin algoritmia.
-
     Syötteenä saadaan lista (x, y) tupleja "points", joka pitää sisällään huoneiden keskipisteiden koordinaatit,
-
     sekä setti (i, j) tupleja "edges", jossa i ja j ovat points-listan indeksejä ja vastaavat hyväksyttyjen kolmioiden sivujen päätepisteitä.
-
     Funktio palauttaa setin (i, j) tupleja "result_edges", joka sisältää minimimäärän sivuja jotka käyvät läpi kaikki pisteet.
     """
 

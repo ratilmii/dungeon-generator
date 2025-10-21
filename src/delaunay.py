@@ -48,10 +48,8 @@ def make_super_triangle(points):
 
 def triangulate(points):
     """"
-    Triangulaatio Bowyer-Watson-menetelmällä.
-    
+    Triangulaatio Bowyer-Watson-menetelmällä.    
     points-parametri luolaston generoinnista saatu lista (x,y) tupleja.
-
     Palauttaa listan kolmioita muodossa [[i, j, k],...], jossa i, j, k ovat points-listan indeksejä.
     """
     

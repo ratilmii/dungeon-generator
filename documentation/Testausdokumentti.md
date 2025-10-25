@@ -1,7 +1,17 @@
 # Dungeon Generator - Testit
 
 ## Kattavuusraportti
-TODO
+
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+src\delaunay.py         56      0     24      0   100%
+src\dungeon.py          52     12     10      0    71%   71-73, 80-90
+src\pathfinding.py     105     15     46      2    75%   150, 170->162, 187-193, 200-208
+src\prim.py             34      0     12      0   100%
+----------------------------------------------------------------
+TOTAL                  247     27     92      2    84%
+
+Html-raportin voi luoda ajamalla komennon `coverage html`. Tämä luo kansioon htmlcov tiedoston index.html, jonka voi avata selaimessa.
 
 ## Mitä testattu
 

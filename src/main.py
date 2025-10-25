@@ -144,6 +144,12 @@ if __name__ == "__main__":
                     dungeon.generate_rooms()
                     pathfinding.find_all_paths()
 
+                    extra_path_count_max = len(dungeon.edges) - len(dungeon.mst)
+                    pathfinding.extra_path_count = min(pathfinding.extra_path_count, extra_path_count_max)
+                    extra_path_count_slider.value_range = (0, extra_path_count_max)
+                    extra_path_count_slider.start_value = pathfinding.extra_path_count
+                    extra_path_count_slider.set_current_value(pathfinding.extra_path_count)
+
             if event.type == pygame_gui.UI_CHECK_BOX_CHECKED or event.type == pygame_gui.UI_CHECK_BOX_UNCHECKED:
                 if event.ui_element == triangulation_checkbox:
                     show_triangulation = triangulation_checkbox.is_checked
@@ -164,6 +170,12 @@ if __name__ == "__main__":
                         dungeon.room_count = room_count
                         dungeon.generate_rooms()
                         pathfinding.find_all_paths()
+
+                        extra_path_count_max = len(dungeon.edges) - len(dungeon.mst)
+                        pathfinding.extra_path_count = min(pathfinding.extra_path_count, extra_path_count_max)
+                        extra_path_count_slider.value_range = (0, extra_path_count_max)
+                        extra_path_count_slider.start_value = pathfinding.extra_path_count
+                        extra_path_count_slider.set_current_value(pathfinding.extra_path_count)
 
                 if event.ui_element == extra_path_count_slider:
                     current_value = int(event.value)

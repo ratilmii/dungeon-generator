@@ -5,8 +5,7 @@ from prim import minimum_spanning_tree, weight
 class TestPrim(unittest.TestCase):
     def setUp(self):
         """
-        Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena. 
-
+        Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena.
         Tallennetaan huoneiden keskipisteet ja pisteiden väliset sivut muuttujiin.
         """
 
@@ -36,12 +35,9 @@ class TestPrim(unittest.TestCase):
 
     def test_minimum_spanning_tree(self):
         """
-        Generoidaan minimum spanning tree ja testataan, että
-        
+        Generoidaan minimum spanning tree ja testataan, että        
         1. Kaikki points-listan pisteet sisältyvät MST:hen
-
         2. MST:ssä on oikea määrä sivuja
-
         3. Kaikki MST:n sivut kuuluvat triangulaatioon
         """
         

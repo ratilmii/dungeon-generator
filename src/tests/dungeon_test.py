@@ -31,10 +31,8 @@ class TestDungeon(unittest.TestCase):
 
     def test_generate_rooms(self):
         """
-        Generoidaan huoneet ja testataan, että
-        
+        Generoidaan huoneet ja testataan, että        
         1. Huoneita generoidaan vähintään yksi, mutta ei enempää kuin room_count
-        
         2. Generoidut huoneet eivät ole päällekkäin tai aivan vierekkäin (BUFFER minimiväli)
         """
         

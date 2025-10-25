@@ -138,8 +138,10 @@ class TestPathfinding(unittest.TestCase):
     def test_find_all_paths(self):
         """
         Testataan, että polkuja on löydetty ja niillä kaikilla on jokin pituus.
+        Testataan, että MST:n polut + ylimääräiset polut kattavat kaikki triangulaation sivut.
         """
         self.pathfinding.find_all_paths()
         self.assertGreater(len(self.pathfinding.paths), 0)
+        self.assertEqual(len(self.pathfinding.paths) + len(self.pathfinding.extra_paths), len(self.dungeon.edges))
         for path in self.pathfinding.paths:
             self.assertTrue(len(path.grid_cells) > 0)

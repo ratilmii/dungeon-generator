@@ -2,6 +2,7 @@
 
 ## Kattavuusraportti
 
+```
 Name                 Stmts   Miss Branch BrPart  Cover   Missing
 ----------------------------------------------------------------
 src\delaunay.py         56      0     24      0   100%
@@ -10,6 +11,7 @@ src\pathfinding.py     105     15     46      2    75%   150, 170->162, 187-193,
 src\prim.py             34      0     12      0   100%
 ----------------------------------------------------------------
 TOTAL                  247     27     92      2    84%
+```
 
 Html-raportin voi luoda ajamalla komennon `coverage html`. Tämä luo kansioon htmlcov tiedoston index.html, jonka voi avata selaimessa.
 
@@ -17,7 +19,7 @@ Html-raportin voi luoda ajamalla komennon `coverage html`. Tämä luo kansioon h
 
 Testit on tehty pytest yksikkötesteillä. Testeillä testataan ohjelman päätoiminnallisuutta ja oleellisia osa-alueita, käyttöliittymän piirtämistä ei testata. Testit löytyvät kansiosta src/tests.
 
-Testeissä on käytetty testiolioita, joille on annettu tarvittavat parametrit. Testit voidaan ajaa komennolla pytest.
+Testeissä on käytetty testiolioita, joille on annettu tarvittavat parametrit. Testit voidaan ajaa komennolla `pytest`.
 
 
 ### dungeon_test.py

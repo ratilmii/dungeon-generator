@@ -19,6 +19,9 @@ room_count = 16
 room_min_len = 4
 room_max_len = 14
 
+extra_path_count = 0
+extra_path_count_max = 0
+
 color_bg = (200,200,200) 
 black = (0,0,0)
 white = (255,255,255)
@@ -45,6 +48,7 @@ if __name__ == "__main__":
     )
 
     pathfinding = Pathfinding(dungeon)
+    extra_path_count_max = len(dungeon.edges) - len(dungeon.mst)
 
     generate_button = pygame_gui.elements.UIButton(
         relative_rect = pygame.Rect((30, 790), (210, 60)),
@@ -106,6 +110,20 @@ if __name__ == "__main__":
         manager = manager
     )
 
+    extra_path_count_label = pygame_gui.elements.ui_label.UILabel(
+        relative_rect = pygame.Rect((10, 310), (190, 20)),
+        text = "Lisäkäytävien määrä:",
+        manager = manager
+    )
+
+    extra_path_count_slider = pygame_gui.elements.ui_horizontal_slider.UIHorizontalSlider(
+        relative_rect = pygame.Rect((10, 340), (175, 25)),
+        start_value = 0,
+        value_range = (0, extra_path_count_max),
+        click_increment = 1,
+        manager = manager
+    )
+
     running = True
     show_triangulation = False
     show_mst = False
@@ -140,13 +158,20 @@ if __name__ == "__main__":
 
             if event.type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
                 if event.ui_element == room_count_slider:
-                    current_value = int(event.value)
-                    
+                    current_value = int(event.value)                    
                     if current_value != room_count:
                         room_count = current_value
                         dungeon.room_count = room_count
                         dungeon.generate_rooms()
                         pathfinding.find_all_paths()
+
+                if event.ui_element == extra_path_count_slider:
+                    current_value = int(event.value)
+                    if current_value != extra_path_count:
+                        extra_path_count = current_value
+                        pathfinding.extra_path_count = extra_path_count
+
+
 
 
         manager.update(dt)

@@ -46,6 +46,8 @@ class Pathfinding:
         self.grid_table = np.zeros((self.tiles_vertical, self.tiles_horizontal), dtype=int)
 
         self.paths = []
+        self.extra_paths = []
+        self.extra_path_count = 0
 
         self.find_all_paths()
 
@@ -154,9 +156,10 @@ class Pathfinding:
         """
 
         self.paths.clear()
+        self.extra_paths.clear()
         self.set_rooms_walkable()
 
-        for (i, j) in self.dungeon.mst:
+        for (i, j) in self.dungeon.edges:
             p1 = self.dungeon.points[i]
             p2 = self.dungeon.points[j]
 
@@ -168,7 +171,10 @@ class Pathfinding:
                 path = Path(start, goal)
                 path.grid_cells = path_cells
                 path.generate_cells(self.dungeon.tile_size, self.dungeon.left_buffer, self.dungeon.buffer)
-                self.paths.append(path)
+                if (i, j) in self.dungeon.mst:
+                    self.paths.append(path)
+                else:
+                    self.extra_paths.append(path)
 
                 for row, col in path_cells:
                     self.grid_table[row, col] = 1
@@ -181,6 +187,10 @@ class Pathfinding:
         for path in self.paths:
             for cell in path.cells:
                 pygame.draw.rect(screen, (120, 100, 100), cell)
+
+        for path in self.extra_paths[:self.extra_path_count]:
+            for cell in path.cells:
+                pygame.draw.rect(screen, (120, 100, 100), cell)
     
     def draw_clean_paths(self, screen):
         """
@@ -191,3 +201,8 @@ class Pathfinding:
             for cell in path.cells:
                 if not any(cell.colliderect(existing) for existing in self.dungeon.rooms):
                     screen.fill((120, 100, 100), cell)
+
+        for path in self.extra_paths[:self.extra_path_count]:
+            for cell in path.cells:
+                if not any(cell.colliderect(existing) for existing in self.dungeon.rooms):
+                    pygame.draw.rect(screen, (120, 100, 100), cell)

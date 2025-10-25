@@ -26,7 +26,7 @@ Testeissä on käytetty testiolioita, joille on annettu tarvittavat parametrit. 
 
 Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena. 
 
-Generoidaan huoneet ja testataan, että 1. huoneita generoidaan vähintään yksi, mutta ei enempää kuin room_count ja 2. generoidut huoneet eivät ole päällekkäin tai aivan vierekkäin (BUFFER minimiväli)
+Generoidaan huoneet ja testataan, että 1. huoneita generoidaan vähintään yksi, mutta ei enempää kuin room_count ja 2. generoidut huoneet eivät ole päällekkäin tai aivan vierekkäin (BUFFER minimiväli).
 
 ### delaunay_test.py
 

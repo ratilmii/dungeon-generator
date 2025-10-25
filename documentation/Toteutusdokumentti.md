@@ -10,21 +10,24 @@ Ohjelma piirtää oletuksena näytölle luolaston huoneet ja pienimmän virittä
 
 ### Bowyer-Watson
 Aika: O(n²) pahimmillaan, O(n log n) keskimäärin.
-Tila: O(n) 
+
+Tila: O(n).
 
 missä n on triangulaation pisteiden määrä.
 
 ### Prim
 
-Aika: O(V²) naiivi
-Tila: O(V + E)
+Aika: O(V²) naiivi.
+
+Tila: O(V + E).
 
 missä V on pisteiden määrä, E on sivujen määrä.
 
 ### A*
 
-Aika: O(b^d) pahimmillaan, O((V + E) log V) käytännössä
-Tila: O(b^d)
+Aika: O(b^d) pahimmillaan, O((V + E) log V) käytännössä.
+
+Tila: O(b^d).
 
 missä b on solun keskimääräinen naapurien määrä, d on lyhyimmän polun pituus.
 
@@ -42,4 +45,8 @@ ChatGPT:tä käytetty enimmäkseen "palautteen" antamiseen, eli ts. teen toteutu
 
 ## Lähteet
 
-https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm https://en.wikipedia.org/wiki/Prim%27s_algorithm https://en.wikipedia.org/wiki/A*_search_algorithm
+https://en.wikipedia.org/wiki/BowyerE2%80%93Watson_algorithm
+
+https://en.wikipedia.org/wiki/Prim27s_algorithm
+
+https://en.wikipedia.org/wiki/A*_search_algorithm

@@ -45,8 +45,8 @@ ChatGPT:tä käytetty enimmäkseen "palautteen" antamiseen, eli ts. teen toteutu
 
 ## Lähteet
 
-https://en.wikipedia.org/wiki/BowyerE2%80%93Watson_algorithm
+https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
 
-https://en.wikipedia.org/wiki/Prim27s_algorithm
+https://en.wikipedia.org/wiki/Prim's_algorithm
 
 https://en.wikipedia.org/wiki/A*_search_algorithm

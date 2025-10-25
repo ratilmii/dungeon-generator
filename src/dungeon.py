@@ -63,7 +63,7 @@ class Dungeon:
         self.edges = get_edges(self.triangulation)
         self.mst = minimum_spanning_tree(self.points, self.edges)
 
-    def draw_rooms(self, screen):
+    def draw_rooms(self, screen): # pragma: no cover
         """
         Piirretään huoneet näytölle.
         """
@@ -72,7 +72,7 @@ class Dungeon:
             pygame.draw.rect(screen, (200, 100, 100), room)
             pygame.draw.rect(screen, (50, 50, 50), room, 1)
 
-    def draw_grid(self, screen):
+    def draw_grid(self, screen): # pragma: no cover
         """
         Piirretään ruudukon viivat perustuen tile_size-kokoon.
         """

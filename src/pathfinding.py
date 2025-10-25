@@ -179,7 +179,7 @@ class Pathfinding:
                 for row, col in path_cells:
                     self.grid_table[row, col] = 1
 
-    def draw_all_paths(self, screen):
+    def draw_all_paths(self, screen): # pragma: no cover
         """
         Piirretään kaikki polut, myös ne, jotka menevät huoneiden päälle.
         """
@@ -192,7 +192,7 @@ class Pathfinding:
             for cell in path.cells:
                 pygame.draw.rect(screen, (120, 100, 100), cell)
     
-    def draw_clean_paths(self, screen):
+    def draw_clean_paths(self, screen): # pragma: no cover
         """
         Piirretään vain ne polut, jotka eivät osu huoneiden kanssa päällekkäin.
         """

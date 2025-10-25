@@ -6,8 +6,7 @@ from delaunay import circumcircle_contains, triangulate, get_edges
 class TestDelaunay(unittest.TestCase):
     def setUp(self):
         """
-        Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena. 
-
+        Luodaan testi-dungeon samoilla parametreilla, joita ohjelma käyttää oletuksena.
         Tallennetaan huoneiden keskipisteet, triangulaatio ja kolmioiden sivut muuttujiin.
         """
         
@@ -54,11 +53,8 @@ class TestDelaunay(unittest.TestCase):
     def test_triangulate(self):
         """
         Tarkistetaan, että
-
         1. jokainen piste kuuluu ainakin yhteen triangulaatiosta saatuun kolmioon
-
-        2. yksikään piste ei ole sellaisen kolmion, johon se ei kuulu, ympärysympyrän sisällä
-        
+        2. yksikään piste ei ole sellaisen kolmion, johon se ei kuulu, ympärysympyrän sisällä        
         3. kaikki kolmioiden indeksit ovat valideja
         """      
 

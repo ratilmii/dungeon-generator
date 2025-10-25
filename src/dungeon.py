@@ -7,11 +7,8 @@ class Dungeon:
     def __init__(self, left_buffer, buffer, grid_width, grid_height, tile_size, room_count, room_min_len, room_max_len):
         """
         Luodaan Dungeon-olio joka generoi room_count määrän satunnaisen kokoisia (room_min_len - room_max_len) huoneita.
-
         left_buffer ja buffer rajaavat piirtoalueen ohjelman pääikkunaa pienemmäksi.
-
         grid_width ja grid_height määrittelevät piirtoalueen leveyden ja korkeuden.
-
         tile_size määrittelee ruudukon yksittäisen ruudun koon.
         """
 
@@ -36,9 +33,7 @@ class Dungeon:
     def generate_rooms(self):
         """
         Generoidaan huoneet annettujen parametrien perusteella. 
-
         Huoneet eivät saa olla päällekkäin, tai aivan vierekkäin, ja niiden sijoittamiselle on attempts_left määrä yrityksiä.
-
         Kun huoneet on generoitu, niille tehdään Delaunay-triangulaatio ja luodaan minimum spanning tree.
         """
         

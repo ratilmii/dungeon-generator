@@ -30,7 +30,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
    
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    manager = pygame_gui.UIManager((WIDTH, HEIGHT), "gui/theme.json")
+    manager = pygame_gui.UIManager((WIDTH, HEIGHT), "src/gui/theme.json")
     pygame.display.set_caption("Dungeon Generator")
 
     dungeon = Dungeon(
